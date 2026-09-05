@@ -1,0 +1,17 @@
+# JDEV 0.13.1 - contrato de exit codes (para scripts y CI)
+# 0 = exito, 1 = error de uso, 2 = error de ejecucion
+
+## 0 - exito
+# comando: echo '{"a":1}' | jdev json validate
+valid JSON
+exit code: 0
+
+## 1 - error de uso
+# comando: jdev uuid --v4 --v7 (opciones mutuamente excluyentes)
+--v4 and --v7 are mutually exclusive
+exit code: 1
+
+## 2 - error de ejecucion
+# comando: jdev json validate archivo-inexistente.txt
+cannot read file 'archivo-inexistente.txt': ENOENT: no such file or directory, open 'archivo-inexistente.txt'
+exit code: 2

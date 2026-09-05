@@ -1,0 +1,22 @@
+# JDEV 0.13.1 - TUI interactivo (jdev tui)
+# Menu en pantalla completa (requiere terminal interactiva / TTY).
+# Navegacion: flechas o j/k · Enter para elegir · el idioma cambia en caliente.
+
+? Selecciona una opción
+  UUID — generar identificadores (v4 / v7)
+  JSON — validar / formatear / minificar
+  Base64 — encode / decode (RFC 4648)
+  Timestamp — epoch ↔ ISO 8601
+  Hash — sha256 / sha512 streaming
+  Password — bcrypt hash / verify / generate
+  JWT — decodificar token (solo lectura)
+  CSV — info / format / tojson
+  HTTP — peticiones con secrets enmascarados
+  Modo libre — ejecutar un comando jdev completo
+  Idioma (es / en)
+  Salir
+
+# Sin TTY, el TUI aborta con exit 1 (via de scripting = CLI plano):
+$ jdev tui < /dev/null
+el TUI requiere una terminal interactiva (TTY); usa los subcomandos (jdev <cmd>) para scripts y automatización
+exit code: 1

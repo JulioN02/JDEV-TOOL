@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<!--
+  JDEV · CLI Dev Toolkit — Interactive Dashboard (GitHub Pages main page)
+  Single-file HTML/CSS/JS showcase (no dependencies, no build, offline, no external network).
+  UI language: Spanish (neutral). Code comments: English.
+  Reader journey: portfolio blog (concept) -> this dashboard (tool overview)
+  -> README (technical guide & reference).
+  Structure: Que es -> Por que CLI -> Utilidades -> Dos formas de uso (CLI/TUI)
+  -> Diseno de ingenieria -> Evidencia -> Instalacion y uso -> Conclusion -> Footer.
+  Terminal demos show REAL captured output of jdev v0.13.1 (docs/evidence).
+-->
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>JDEV · Kit de utilidades CLI para desarrollo</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --bg-soft: #10151d;
+    --card: #161b22;
+    --card-2: #1c2330;
+    --border: #30363d;
+    --border-soft: #21262d;
+    --text: #e6edf3;
+    --text-dim: #9da7b3;
+    --text-faint: #6e7681;
+    --green: #3fb950;
+    --green-dim: #2ea043;
+    --red: #f85149;
+    --red-dim: #da3633;
+    --yellow: #d29922;
+    --blue: #58a6ff;
+    --purple: #bc8cff;
+    --cyan: #76e3ea;
+    --mono: "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- Header / hero ---------- */
+  header.hero {
+    border-bottom: 1px solid var(--border-soft);
+    background:
+      radial-gradient(900px 300px at 20% -40%, rgba(88,166,255,.10), transparent),
+      radial-gradient(800px 300px at 90% -30%, rgba(118,227,234,.07), transparent),
+      var(--bg);
+    padding: 56px 0 40px;
+  }
+  .hero .tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 12px; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--blue);
+    border: 1px solid var(--border); border-radius: 999px;
+    padding: 5px 12px; margin-bottom: 18px; background: var(--card);
+  }
+  .hero h1 { font-size: clamp(26px, 4vw, 40px); font-weight: 800; letter-spacing: -.02em; }
+  .hero h1 .accent { color: var(--blue); }
+  .hero .sub { color: var(--text-dim); margin-top: 10px; max-width: 720px; font-size: 15px; }
+  .hero .sub b { color: var(--text); }
+  .hero .sub code { font-family: var(--mono); font-size: .92em; color: var(--blue); }
+
+  .banner {
+    display: flex; align-items: flex-start; gap: 12px; margin-top: 24px;
+    background: rgba(88,166,255,.08); border: 1px solid rgba(88,166,255,.3);
+    border-radius: var(--radius); padding: 12px 16px;
+    font-size: 13px; color: var(--text-dim);
+  }
+  .banner .banner-icon { font-size: 16px; line-height: 1.4; }
+  .banner p { margin: 0; }
+  .banner b { color: var(--text); }
+  .banner code { font-family: var(--mono); font-size: .95em; color: var(--green); }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+  .chip {
+    font-family: var(--mono); font-size: 12px; color: var(--text-dim);
+    background: var(--card); border: 1px solid var(--border); border-radius: 999px;
+    padding: 4px 10px;
+  }
+  .chip b { color: var(--text); font-weight: 600; }
+
+  /* ---------- Sections ---------- */
+  section { padding: 44px 0; border-bottom: 1px solid var(--border-soft); }
+  section h2 {
+    font-size: 20px; font-weight: 700; letter-spacing: -.01em;
+    display: flex; align-items: center; gap: 10px; margin-bottom: 6px;
+  }
+  section h2 .num {
+    font-family: var(--mono); font-size: 13px; color: var(--blue);
+    border: 1px solid var(--border); border-radius: 6px; padding: 2px 7px;
+    background: var(--card);
+  }
+  .lede { color: var(--text-dim); font-size: 14px; margin-bottom: 22px; max-width: 760px; }
+  .lede b { color: var(--text); }
+  .lede code, .card p code, .takeaway code, .term-line code { font-family: var(--mono); font-size: .92em; color: var(--blue); }
+
+  /* ---------- Compare CLI vs GUI ---------- */
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  @media (max-width: 900px) { .compare-grid { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 20px; position: relative;
+  }
+  .card h3 { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+  .card p { font-size: 13px; color: var(--text-dim); }
+  .card p + p { margin-top: 8px; }
+  .card.win { border-color: rgba(63,185,80,.4); }
+  .card.win h3::after {
+    content: "elegida"; font-family: var(--mono); font-size: 10px; text-transform: uppercase;
+    color: var(--green); border: 1px solid rgba(63,185,80,.4); border-radius: 999px;
+    padding: 2px 8px; margin-left: 8px; vertical-align: middle;
+  }
+  .cost { color: var(--text-faint); font-size: 12.5px; margin-top: 6px; }
+  .cost b { color: var(--text-dim); }
+
+  /* ---------- Module grid ---------- */
+  .modules { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 860px) { .modules { grid-template-columns: 1fr; } }
+
+  .mod {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 18px 20px; display: flex; flex-direction: column; gap: 6px;
+  }
+  .mod .m-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .mod .m-name { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--blue); }
+  .mod .m-tag { font-family: var(--mono); font-size: 10.5px; color: var(--text-faint); text-transform: uppercase; letter-spacing: .06em; }
+  .mod p { font-size: 13px; color: var(--text-dim); }
+  .mod .m-cmd {
+    font-family: var(--mono); font-size: 12px; color: var(--text);
+    background: var(--card-2); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 8px 12px; margin-top: 6px;
+    overflow-x: auto; white-space: nowrap;
+  }
+  .mod .m-sec { font-size: 12px; color: var(--green); font-family: var(--mono); }
+
+  /* ---------- Terminal demo blocks ---------- */
+  .demo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+  @media (max-width: 900px) { .demo-grid { grid-template-columns: 1fr; } }
+
+  .term {
+    background: #0a0e14; border: 1px solid var(--border); border-radius: var(--radius);
+    overflow: hidden; font-family: var(--mono); font-size: 12px; line-height: 1.75;
+  }
+  .term .tbar {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--card); border-bottom: 1px solid var(--border);
+    padding: 8px 12px;
+  }
+  .term .tbar .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .term .tbar .d-red { background: #ff5f56; }
+  .term .tbar .d-yel { background: #ffbd2e; }
+  .term .tbar .d-grn { background: #27c93f; }
+  .term .tbar .ttl { color: var(--text-faint); font-size: 11px; margin-left: 6px; }
+  .term .tbody { padding: 12px 14px 14px; overflow-x: auto; }
+  .term .trow { white-space: pre; }
+  .term .trow.prompt { color: var(--green); }
+  .term .trow.cmd { color: var(--text); }
+  .term .trow.comment { color: var(--text-faint); font-style: italic; }
+  .term .trow.out { color: var(--text-dim); }
+  .term .trow.ok { color: var(--green); }
+  .term .trow.err { color: var(--red); }
+  .term .trow.masked { color: var(--yellow); }
+
+  /* ---------- Exit-code contract ---------- */
+  table.results {
+    width: 100%; border-collapse: collapse; font-size: 13px;
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    overflow: hidden;
+  }
+  table.results th, table.results td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--border-soft); }
+  table.results th { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-faint); background: var(--card-2); }
+  table.results td { color: var(--text-dim); }
+  table.results td b { color: var(--text); }
+  table.results code { font-family: var(--mono); font-size: .92em; color: var(--blue); }
+  table.results tr:last-child td { border-bottom: none; }
+  .pill { font-family: var(--mono); font-size: 12px; font-weight: 700; border-radius: 6px; padding: 2px 8px; }
+  .pill.p0 { color: var(--green); background: rgba(63,185,80,.14); border: 1px solid rgba(63,185,80,.35); }
+  .pill.p1 { color: var(--yellow); background: rgba(210,153,34,.14); border: 1px solid rgba(210,153,34,.35); }
+  .pill.p2 { color: var(--red); background: rgba(248,81,73,.14); border: 1px solid rgba(248,81,73,.35); }
+
+  .sec-list { list-style: none; margin-top: 6px; }
+  .sec-list li { display: flex; gap: 10px; padding: 9px 0; border-bottom: 1px dashed var(--border-soft); font-size: 13.5px; color: var(--text-dim); }
+  .sec-list li:last-child { border-bottom: none; }
+  .sec-list li .ic { color: var(--green); font-family: var(--mono); }
+  .sec-list li b { color: var(--text); }
+  .sec-list li code { font-family: var(--mono); font-size: .92em; color: var(--blue); }
+
+  /* ---------- Evidence gallery ---------- */
+  .ev-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 860px) { .ev-grid { grid-template-columns: 1fr; } }
+  .ev-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 16px 18px;
+  }
+  .ev-card h3 { font-size: 13.5px; font-weight: 700; margin-bottom: 4px; }
+  .ev-card h3 code { font-family: var(--mono); color: var(--blue); }
+  .ev-card p { font-size: 12.5px; color: var(--text-dim); margin-bottom: 10px; }
+  .ev-links { display: flex; flex-wrap: wrap; gap: 8px; }
+  .ev-links a {
+    font-family: var(--mono); font-size: 11.5px; color: var(--blue);
+    border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; background: var(--card-2);
+  }
+  .ev-links a:hover { border-color: var(--blue); text-decoration: none; }
+
+  /* ---------- Steps (install/usage) ---------- */
+  .steps { display: flex; flex-direction: column; gap: 12px; }
+  .step {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 16px 20px; display: flex; gap: 14px; align-items: flex-start;
+  }
+  .step .snum {
+    font-family: var(--mono); font-size: 12px; color: var(--blue); flex-shrink: 0;
+    border: 1px solid var(--border); border-radius: 6px; padding: 3px 8px; background: var(--card-2);
+  }
+  .step .sbody { min-width: 0; }
+  .step h3 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .step p { font-size: 13px; color: var(--text-dim); }
+  .step p code { font-family: var(--mono); font-size: .92em; color: var(--blue); }
+  .step pre {
+    margin-top: 8px; background: #0a0e14; border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 10px 12px; overflow-x: auto;
+    font-family: var(--mono); font-size: 12px; line-height: 1.7; color: var(--text);
+  }
+  .step pre .cmt { color: var(--text-faint); }
+
+  /* ---------- Conclusion ---------- */
+  .takeaway {
+    background: rgba(188,140,255,.07); border: 1px solid rgba(188,140,255,.3);
+    border-radius: var(--radius); padding: 16px 20px; margin-top: 20px;
+  }
+  .takeaway h3 { font-size: 14px; color: var(--purple); margin-bottom: 6px; }
+  .takeaway p { font-size: 13.5px; color: var(--text-dim); }
+  .takeaway p b { color: var(--text); }
+
+  footer.foot {
+    padding: 32px 0; color: var(--text-faint); font-size: 13px;
+  }
+  footer.foot .links { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 12px; }
+  footer.foot .links a { font-family: var(--mono); font-size: 12.5px; }
+  footer.foot p code { font-family: var(--mono); font-size: .92em; color: var(--text-dim); }
+
+  /* ---------- Syntax-ish highlight inside term ---------- */
+  .hl-b { color: var(--blue); font-weight: 700; }
+  .hl-g { color: var(--green); }
+  .hl-c { color: var(--cyan); }
+  .hl-d { color: var(--text-faint); }
+  .hl-y { color: var(--yellow); }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="tag">Herramienta de ingeniería · CLI Dev Toolkit</span>
+    <h1>JDEV — <span class="accent">un solo binario, 10 utilidades</span> para tu día a día</h1>
+    <p class="sub">
+      Genera UUIDs, valida JSON, codifica base64, convierte timestamps, calcula hashes,
+      hashea contraseñas con <b>bcrypt</b>, decodifica JWT (solo lectura), procesa CSV y
+      prueba APIs — todo bajo un solo comando <code>jdev</code>, con dos formas de uso
+      (terminal directa y <b>TUI interactivo</b>) y mensajes en español o inglés.
+    </p>
+    <div class="banner">
+      <span class="banner-icon">⚡</span>
+      <p><b>Instalación en un paso:</b> <code>npm install -g @jsoftsolutions/jdev</code> — funciona apenas se instala, sin configuración.</p>
+    </div>
+    <div class="chips">
+      <span class="chip">Node <b>≥ 22.12</b></span>
+      <span class="chip">TypeScript <b>ESM</b></span>
+      <span class="chip"><b>226</b> tests</span>
+      <span class="chip">exit <b>0 / 1 / 2</b></span>
+      <span class="chip">es / en</span>
+      <span class="chip">Apache-<b>2.0</b></span>
+    </div>
+  </div>
+</header>
+
+<section id="que-es">
+  <div class="wrap">
+    <h2><span class="num">01</span> ¿Qué es JDEV?</h2>
+    <p class="lede">
+      Un <b>kit de herramientas de desarrollo en línea de comandos</b>: diez utilidades de
+      trabajo diario bajo un solo binario. La idea no es reemplazar a programas grandes
+      (<code>curl</code>, <code>jq</code>, <code>openssl</code>…), sino concentrar las tareas
+      repetidas del día a día en un único contrato de texto, estable y componible.
+    </p>
+    <p class="lede">
+      Cada utilidad es un <b>programa pequeño que hace una cosa bien</b> y se encadena con
+      los demás mediante pipes: <code>jdev csv tojson | jq</code>. Es la filosofía Unix aplicada
+      a un toolkit de desarrollo moderno.
+    </p>
+    <div class="compare-grid">
+      <div class="card">
+        <h3>GUI</h3>
+        <p>Amigable y visual, ideal para explorar.</p>
+        <p class="cost"><b>Costo:</b> no automatizable, no componible desde un script.</p>
+      </div>
+      <div class="card">
+        <h3>Librería</h3>
+        <p>Reutilizable dentro de código.</p>
+        <p class="cost"><b>Costo:</b> el usuario final no la usa; hay que escribir el programa alrededor.</p>
+      </div>
+      <div class="card win">
+        <h3>CLI</h3>
+        <p>Automatizable (scripts / CI), componible (pipes), universal.</p>
+        <p class="cost"><b>Costo:</b> exige respetar un contrato de texto y códigos de salida estables.</p>
+      </div>
+    </div>
+    <p class="lede" style="margin-top:18px; margin-bottom:0">
+      Las utilidades de <code>jdev</code> las usa un humano <b>y</b> un script → el CLI es la
+      única forma que sirve para ambos.
+    </p>
+  </div>
+</section>
+
+<section id="utilidades">
+  <div class="wrap">
+    <h2><span class="num">02</span> Las 10 utilidades</h2>
+    <p class="lede">
+      Nueve módulos de datos y un <b>TUI</b> que los envuelve. Todos comparten el mismo
+      contrato: <b>datos al stdout, errores al stderr</b> y códigos de salida estables.
+    </p>
+    <div class="modules">
+      <div class="mod">
+        <div class="m-head"><span class="m-name">uuid</span><span class="m-tag">RFC 4122 · RFC 9562</span></div>
+        <p>UUID v4 aleatorios (criptográfico) y v7 ordenados por tiempo, en cualquier cantidad, uno por línea.</p>
+        <div class="m-cmd">$ jdev uuid --v7 --count 3</div>
+      </div>
+      <div class="mod">
+        <div class="m-head"><span class="m-name">json</span><span class="m-tag">format · minify · validate</span></div>
+        <p>Formatea, minifica y valida JSON con la posición exacta del error (línea y columna).</p>
+        <div class="m-cmd">$ echo '{"a":1}' | jdev json format</div>
+      </div>
+      <div class="mod">
+        <div class="m-head"><span class="m-name">base64</span><span class="m-tag">RFC 4648</span></div>
+        <p>Codifica y decodifica base64 estándar y URL-safe (la variante de JWT y query params).</p>
+        <div class="m-cmd">$ echo -n "hola" | jdev base64 encode --url</div>
+      </div>
+      <div class="mod">
+        <div class="m-head"><span class="m-name">timestamp</span><span class="m-tag">epoch ↔ ISO 8601</span></div>
+        <p>Convierte entre segundos/milisegundos Unix y fechas legibles UTC o con offset local.</p>
+        <div class="m-cmd">$ jdev timestamp 1710000000 --iso</div>
+      </div>
+      <div class="mod">
+        <div class="m-head"><span class="m-name">hash</span><span class="m-tag">sha256 · sha512 streaming</span></div>
+        <p>Huella digital de archivos o stdin en streaming: memoria fija aunque el archivo pese gigas.</p>
+        <div class="m-cmd">$ echo -n "texto" | jdev hash</div>
+      </div>
+      <div class="mod">
+        <div class="m-head"><span class="m-name">password</span><span class="m-tag">bcrypt · timing-safe</span></div>
+        <p>Genera, hashea y verifica contraseñas con bcrypt, guard de 72 bytes y verificación timing-safe.</p>
+        <div class="m-cmd">$ jdev password hash "misecreto"</div>
+      </div>
+      <div class="mod">
+        <div class="m-head"><span class="m-name">jwt</span><span class="m-tag">solo lectura</span></div>
+        <p>Decodifica header y payload de un token JWT como JSON legible. La firma nunca se toca.</p>
+        <div class="m-cmd">$ jdev jwt "eyJhbGciOi..."</div>
+      </div>
+      <div class="mod">
+        <div class="m-head"><span class="m-name">csv</span><span class="m-tag">RFC 4180 streaming</span></div>
+        <p>Inspecciona, normaliza (BOM, CRLF) y convierte CSV a JSON con un parser estricto en streaming.</p>
+        <div class="m-cmd">$ jdev csv tojson export.csv</div>
+      </div>
+      <div class="mod">
+        <div class="m-head"><span class="m-name">http</span><span class="m-tag">mini-curl · secrets enmascarados</span></div>
+        <p>Peticiones HTTP mostrando status + cabeceras + cuerpo, con <code>authorization</code>, <code>cookie</code> y <code>set-cookie</code> siempre como <code>***</code>.</p>
+        <div class="m-cmd">$ jdev http -H "Authorization: Bearer x" URL</div>
+      </div>
+      <div class="mod">
+        <div class="m-head"><span class="m-name">tui</span><span class="m-tag">menú interactivo · es/en</span></div>
+        <p>Un menú en pantalla completa que envuelve los 9 módulos, con modo libre e idioma en caliente.</p>
+        <div class="m-cmd">$ jdev tui</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="uso">
+  <div class="wrap">
+    <h2><span class="num">03</span> Dos formas de uso</h2>
+    <p class="lede">
+      El mismo motor, dos superficies: el <b>CLI plano</b> para scripting (salida pura, exit codes
+      estables) y el <b>TUI</b> para humanos (menú guiado que pregunta los parámetros uno por uno).
+    </p>
+    <div class="demo-grid">
+      <div class="term">
+        <div class="tbar"><span class="dot d-red"></span><span class="dot d-yel"></span><span class="dot d-grn"></span><span class="ttl">jdev · terminal directa</span></div>
+        <div class="tbody">
+          <div class="trow prompt">$ jdev uuid --v7 --count 3</div>
+          <div class="trow out">01a007c2-6f3d-775c-bd69-5cac5af37e0c</div>
+          <div class="trow out">01a007c2-6f42-727e-9533-da0675232d88</div>
+          <div class="trow out">01a007c2-6f4a-7336-b3c9-1b5a2c7d8e9f</div>
+          <div class="trow"> </div>
+          <div class="trow prompt">$ echo '{"a":1,"b":[1,2]}' | jdev json format</div>
+          <div class="trow out">{</div>
+          <div class="trow out">  "a": 1,</div>
+          <div class="trow out">  "b": [</div>
+          <div class="trow out">    1,</div>
+          <div class="trow out">    2</div>
+          <div class="trow out">  ]</div>
+          <div class="trow out">}</div>
+        </div>
+      </div>
+      <div class="term">
+        <div class="tbar"><span class="dot d-red"></span><span class="dot d-yel"></span><span class="dot d-grn"></span><span class="ttl">jdev tui · menú interactivo</span></div>
+        <div class="tbody">
+          <div class="trow cmd"><span class="hl-b">⚡ jdev</span> <span class="hl-d">— CLI Dev Toolkit · menú interactivo</span></div>
+          <div class="trow"> </div>
+          <div class="trow comment">? Selecciona una opción</div>
+          <div class="trow cmd"><span class="hl-c">❯</span> <span class="hl-b">UUID — generar identificadores (v4 / v7)</span></div>
+          <div class="trow out">  JSON — validar / formatear / minificar</div>
+          <div class="trow out">  Base64 — encode / decode (RFC 4648)</div>
+          <div class="trow out">  Timestamp — epoch ↔ ISO 8601</div>
+          <div class="trow out">  Hash — sha256 / sha512 streaming</div>
+          <div class="trow out">  Password — bcrypt hash / verify / generate</div>
+          <div class="trow out">  JWT — decodificar token (solo lectura)</div>
+          <div class="trow out">  CSV — info / format / tojson</div>
+          <div class="trow out">  HTTP — peticiones con secrets enmascarados</div>
+          <div class="trow out">  Modo libre — ejecutar un comando jdev completo</div>
+          <div class="trow out">  Idioma (es / en)</div>
+          <div class="trow out">  Salir</div>
+          <div class="trow comment">(Usa las flechas o j/k para navegar, Enter para elegir)</div>
+        </div>
+      </div>
+    </div>
+    <p class="lede" style="margin-top:18px; margin-bottom:0">
+      El TUI navega con <b>flechas / j / k</b>, pregunta los parámetros uno por uno y cambia de
+      idioma <b>en caliente</b>. No es apto para scripting: sin terminal interactiva (TTY) sale con
+      <code>exit 1</code> — la vía para scripts es el CLI plano.
+    </p>
+  </div>
+</section>
+
+<section id="ingenieria">
+  <div class="wrap">
+    <h2><span class="num">04</span> Diseño de ingeniería</h2>
+    <p class="lede">
+      Lo que hace que <code>jdev</code> sea <b>confiable para scripting</b>: un contrato de errores
+      explícito, disciplina de pipes y seguridad por diseño.
+    </p>
+
+    <h3 style="font-size:15px; margin: 6px 0 12px;">Contrato de exit codes</h3>
+    <table class="results">
+      <thead>
+        <tr><th>Código</th><th>Significado</th><th>Ejemplo real</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="pill p0">0</span></td>
+          <td><b>Éxito</b> — dato o veredicto en stdout</td>
+          <td><code>jdev uuid</code>, <code>jdev json validate</code>, HTTP aunque sea 404</td>
+        </tr>
+        <tr>
+          <td><span class="pill p1">1</span></td>
+          <td><b>Error de uso</b> — el comando está mal escrito</td>
+          <td>flag inválido, opciones excluyentes, TUI sin TTY</td>
+        </tr>
+        <tr>
+          <td><span class="pill p2">2</span></td>
+          <td><b>Error de ejecución</b> — la operación falló</td>
+          <td>archivo no existe, JSON inválido, bcrypt malformado, timeout de red</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="lede" style="margin-top:12px">
+      Cada error lleva un <b>code estable</b> (<code>INVALID_JSON</code>, <code>IO_READ</code>,
+      <code>BCRYPT_LENGTH_EXCEEDED</code>, <code>TIMEOUT</code>, <code>TLS</code>…) para que un
+      script distinga tipos sin parsear texto.
+    </p>
+
+    <div class="demo-grid" style="margin-top:22px">
+      <div class="term">
+        <div class="tbar"><span class="dot d-red"></span><span class="dot d-yel"></span><span class="dot d-grn"></span><span class="ttl">Pipes y determinismo</span></div>
+        <div class="tbody">
+          <div class="trow prompt">$ echo '{"a":1}' | jdev json validate</div>
+          <div class="trow ok">valid JSON</div>
+          <div class="trow comment">echo $? → 0</div>
+          <div class="trow"> </div>
+          <div class="trow prompt">$ jdev uuid --v4 --v7</div>
+          <div class="trow err">--v4 and --v7 are mutually exclusive</div>
+          <div class="trow comment">echo $? → 1</div>
+          <div class="trow"> </div>
+          <div class="trow prompt">$ jdev json validate archivo-inexistente.txt</div>
+          <div class="trow err">cannot read file 'archivo-inexistente.txt': ENOENT…</div>
+          <div class="trow comment">echo $? → 2</div>
+        </div>
+      </div>
+      <div class="term">
+        <div class="tbar"><span class="dot d-red"></span><span class="dot d-yel"></span><span class="dot d-grn"></span><span class="ttl">Seguridad por diseño</span></div>
+        <div class="tbody">
+          <div class="trow prompt">$ jdev http http://127.0.0.1:8787/set-cookie</div>
+          <div class="trow out">HTTP/1.1 200 OK</div>
+          <div class="trow out">content-type: application/json; charset=utf-8</div>
+          <div class="trow masked">set-cookie: ***</div>
+          <div class="trow masked">set-cookie: ***</div>
+          <div class="trow out"> </div>
+          <div class="trow out">{"ok":true}</div>
+          <div class="trow"> </div>
+          <div class="trow prompt">$ echo -n "texto" | jdev hash</div>
+          <div class="trow out">f46e3b17a6b639e5efddc3d1498ad73491599c22220f7ef6e14772f4ee25b913</div>
+          <div class="trow comment">SHA-256 · 64 hex (32 bytes)</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-size:15px; margin: 26px 0 6px;">Garantías</h3>
+    <ul class="sec-list">
+      <li><span class="ic">✓</span><span><b>Contraseñas.</b> BCRYPT con sal y costo configurable, verificación <b>timing-safe</b>, guard de 72 bytes medido en bytes UTF-8 aplicado antes de que bcrypt trunque en silencio.</span></li>
+      <li><span class="ic">✓</span><span><b>Aleatoriedad.</b> Siempre <code>randomBytes</code> criptográfico, nunca <code>Math.random</code>.</span></li>
+      <li><span class="ic">✓</span><span><b>JWT.</b> La firma <b>jamás</b> se decodifica ni se imprime; los errores no repiten el token.</span></li>
+      <li><span class="ic">✓</span><span><b>HTTP.</b> Cabeceras <code>authorization / cookie / set-cookie</code> siempre como <code>***</code>; <code>--insecure</code> es scoped a esa request (un Agent de undici por llamada, nunca un dispatcher global).</span></li>
+      <li><span class="ic">✓</span><span><b>Pipes.</b> Datos al stdout, errores al stderr; sin color en pipes por defecto; <b>EPIPE silencioso</b> (<code>jdev uuid | head -1</code> no rompe el pipeline).</span></li>
+      <li><span class="ic">✓</span><span><b>Streaming.</b> HASH y CSV procesan por chunks/filas: memoria acotada aunque el archivo pese gigas.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="evidencia">
+  <div class="wrap">
+    <h2><span class="num">05</span> Evidencia</h2>
+    <p class="lede">
+      Salidas reales de <code>jdev 0.13.1</code> (Node 26, Linux) capturadas durante la verificación:
+      cada módulo con su comando, su resultado y las capturas de terminal en PNG.
+    </p>
+    <div class="ev-grid">
+      <div class="ev-card">
+        <h3><code>01 · uuid</code></h3>
+        <p>3 UUIDs v7 ordenados por tiempo y un UUID v4.</p>
+        <div class="ev-links">
+          <a href="evidence/output-01-uuid.txt">output-01-uuid.txt</a>
+          <a href="evidence/screenshot-01-uuid.png">screenshot-01-uuid.png</a>
+        </div>
+      </div>
+      <div class="ev-card">
+        <h3><code>02 · json</code></h3>
+        <p>Formato de JSON comprimido y validación con error localizado.</p>
+        <div class="ev-links">
+          <a href="evidence/output-02-json.txt">output-02-json.txt</a>
+          <a href="evidence/screenshot-02-json.png">screenshot-02-json.png</a>
+        </div>
+      </div>
+      <div class="ev-card">
+        <h3><code>03 · base64</code></h3>
+        <p>Encode URL-safe y decode simétrico.</p>
+        <div class="ev-links">
+          <a href="evidence/output-03-base64.txt">output-03-base64.txt</a>
+          <a href="evidence/screenshot-03-base64.png">screenshot-03-base64.png</a>
+        </div>
+      </div>
+      <div class="ev-card">
+        <h3><code>04 · timestamp</code></h3>
+        <p>Epoch actual y conversión a ISO 8601 UTC.</p>
+        <div class="ev-links">
+          <a href="evidence/output-04-timestamp.txt">output-04-timestamp.txt</a>
+        </div>
+      </div>
+      <div class="ev-card">
+        <h3><code>05 · hash</code></h3>
+        <p>SHA-256 y SHA-512 en streaming.</p>
+        <div class="ev-links">
+          <a href="evidence/output-05-hash.txt">output-05-hash.txt</a>
+        </div>
+      </div>
+      <div class="ev-card">
+        <h3><code>06 · password</code></h3>
+        <p>bcrypt: hash, verify correcta e incorrecta.</p>
+        <div class="ev-links">
+          <a href="evidence/output-06-password.txt">output-06-password.txt</a>
+          <a href="evidence/screenshot-03-password.png">screenshot-03-password.png</a>
+        </div>
+      </div>
+      <div class="ev-card">
+        <h3><code>07 · jwt</code></h3>
+        <p>Header y payload decodificados; la firma nunca se imprime.</p>
+        <div class="ev-links">
+          <a href="evidence/output-07-jwt.txt">output-07-jwt.txt</a>
+          <a href="evidence/screenshot-04-jwt.png">screenshot-04-jwt.png</a>
+        </div>
+      </div>
+      <div class="ev-card">
+        <h3><code>08 · csv</code></h3>
+        <p>Normalización RFC 4180 y conversión a JSON.</p>
+        <div class="ev-links">
+          <a href="evidence/output-08-csv.txt">output-08-csv.txt</a>
+          <a href="evidence/screenshot-05-csv.png">screenshot-05-csv.png</a>
+        </div>
+      </div>
+      <div class="ev-card">
+        <h3><code>09 · http</code></h3>
+        <p>Mini-curl con secrets enmascarados y 404 = dato.</p>
+        <div class="ev-links">
+          <a href="evidence/output-09-http.txt">output-09-http.txt</a>
+          <a href="evidence/screenshot-06-http.png">screenshot-06-http.png</a>
+        </div>
+      </div>
+      <div class="ev-card">
+        <h3><code>10 · exit codes</code></h3>
+        <p>Contrato 0 / 1 / 2 verificado con casos reales.</p>
+        <div class="ev-links">
+          <a href="evidence/output-10-exit-codes.txt">output-10-exit-codes.txt</a>
+          <a href="evidence/screenshot-07-exit-codes.png">screenshot-07-exit-codes.png</a>
+        </div>
+      </div>
+      <div class="ev-card">
+        <h3><code>11 · errores</code></h3>
+        <p>bcrypt &gt;72 bytes, base64 inválido, epoch no numérico, red.</p>
+        <div class="ev-links">
+          <a href="evidence/output-11-errors.txt">output-11-errors.txt</a>
+        </div>
+      </div>
+      <div class="ev-card">
+        <h3><code>12 · tui</code></h3>
+        <p>Menú interactivo en español neutro.</p>
+        <div class="ev-links">
+          <a href="evidence/output-12-tui.txt">output-12-tui.txt</a>
+          <a href="evidence/screenshot-08-tui.png">screenshot-08-tui.png</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="instalacion">
+  <div class="wrap">
+    <h2><span class="num">06</span> Instalación y puesta en marcha</h2>
+    <p class="lede">
+      Dos vías de acceso, ninguna configuración previa. Requisito único: <b>Node.js ≥ 22.12.0</b>.
+    </p>
+    <div class="steps">
+      <div class="step">
+        <span class="snum">1</span>
+        <div class="sbody">
+          <h3>Desde npm (recomendado)</h3>
+          <p>Instala el binario global <code>jdev</code> y queda listo para usar.</p>
+          <pre><span class="cmt"># npm</span>
+npm install -g @jsoftsolutions/jdev</pre>
+        </div>
+      </div>
+      <div class="step">
+        <span class="snum">2</span>
+        <div class="sbody">
+          <h3>Desde GitHub (código fuente)</h3>
+          <p>Clona el repositorio, instala dependencias y usa la opción A o B.</p>
+          <pre><span class="cmt"># clonar e instalar</span>
+git clone https://github.com/JulioN02/JDEV-TOOL.git
+cd JDEV-TOOL
+npm install
+
+<span class="cmt"># opción A: construir el binario</span>
+npm run build && npm link
+
+<span class="cmt"># opción B: ejecutar directo desde TypeScript (node ≥ 22.12)</span>
+node src/index.ts --version</pre>
+        </div>
+      </div>
+      <div class="step">
+        <span class="snum">3</span>
+        <div class="sbody">
+          <h3>Verificación</h3>
+          <p>Confirma la versión y la lista de los 10 subcomandos.</p>
+          <pre>jdev --version   <span class="cmt"># 0.13.1</span>
+jdev --help      <span class="cmt"># lista los 10 subcomandos</span></pre>
+        </div>
+      </div>
+      <div class="step">
+        <span class="snum">4</span>
+        <div class="sbody">
+          <h3>Variables de entorno útiles</h3>
+          <p><code>JDEV_LANG=es|en</code> fuerza el idioma, <code>NO_COLOR=1</code> desactiva colores y <code>FORCE_COLOR=1</code> los fuerza incluso en pipes.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="conclusion">
+  <div class="wrap">
+    <h2><span class="num">07</span> Conclusión</h2>
+    <p class="lede">
+      JDEV es un <b>kit de utilidades CLI con ingeniería real detrás</b>: un contrato de errores que
+      los scripts pueden consumir, disciplina de pipes, seguridad por diseño en contraseñas, JWT y
+      HTTP, y dos superficies (terminal directa + TUI) sobre el mismo motor.
+    </p>
+    <p class="lede">
+      Verificación realizada en esta revisión: <b>build OK</b>, <b>typecheck OK</b> y
+      <b>226/226 tests pasando</b> (node:test). Las evidencias de la sección 05 son salidas reales
+      de la versión 0.13.1.
+    </p>
+    <div class="takeaway">
+      <h3>Lección clave</h3>
+      <p>
+        Un CLI de utilidades se vuelve confiable cuando respeta su <b>contrato de texto</b>: salida
+        estable, errores a stderr, códigos de salida significativos y secretos que <b>nunca</b> se
+        imprimen por accidente. Eso es lo que convierte a <code>jdev</code> en algo que un humano
+        puede usar y un script puede automatizar.
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="links">
+      <a href="https://github.com/JulioN02/JDEV-TOOL">GitHub — JulioN02/JDEV-TOOL</a>
+      <a href="https://www.npmjs.com/package/@jsoftsolutions/jdev">npm — @jsoftsolutions/jdev</a>
+      <a href="https://www.npmjs.com/~jsoftsolutions">Perfil npm — jsoftsolutions</a>
+    </div>
+    <p>JDEV <code>0.13.1</code> · © 2026 JulioN02 · Apache-2.0 · Dashboard autónomo (sin red externa, un solo archivo).</p>
+  </div>
+</footer>
+
+</body>
+</html>

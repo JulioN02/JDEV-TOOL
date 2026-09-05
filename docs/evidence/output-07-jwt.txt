@@ -1,0 +1,14 @@
+# JDEV 0.13.1 - jwt (solo lectura, nunca toca la firma)
+# comando: jdev jwt '<token>'
+{
+  "header": {
+    "alg": "HS256",
+    "typ": "JWT"
+  },
+  "payload": {
+    "sub": "1234567890",
+    "name": "Juan",
+    "admin": true,
+    "iat": 1516239022
+  }
+}

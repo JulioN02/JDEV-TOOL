@@ -1,0 +1,20 @@
+# JDEV 0.13.1 - manejo de errores (mensajes localizados + codes estables)
+## bcrypt: contraseña mayor a 72 bytes (utf8) es rechazada ANTES de truncar
+# comando: jdev password hash '<72+ bytes>'
+password exceeds the 72-byte bcrypt limit (utf8 byte length, not char count)
+exit code: 2
+
+## base64: entrada invalida
+# comando: echo -n '!!!invalido!!!' | jdev base64 decode
+invalid base64 input: only the base64 alphabet (and up to two trailing "=") is allowed
+exit code: 2
+
+## timestamp: epoch no numerico
+# comando: jdev timestamp abc --iso
+invalid epoch 'abc' (expected a non-negative integer)
+exit code: 2
+
+## http: error de red (conexion rechazada)
+# comando: jdev http --timeout 3 http://127.0.0.1:59999/
+network error requesting 'http://127.0.0.1:59999/': fetch failed
+exit code: 2

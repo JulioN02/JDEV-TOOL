@@ -1,0 +1,8 @@
+# JDEV 0.13.1 - uuid (RFC 4122 v4 / RFC 9562 v7)
+# comando: jdev uuid --v7 --count 3
+01a06f4a-2f1d-7284-8c63-2f1701a9e4ac
+01a06f4a-2f1f-7bc2-b7e7-a759a4389e75
+01a06f4a-2f1f-7bc3-a3c2-23169501b3b4
+
+# comando: jdev uuid
+fc7896f7-d187-4a32-ace5-29a941da0e90

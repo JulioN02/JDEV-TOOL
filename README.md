@@ -10,6 +10,8 @@ jdev password hash "misecreto"  # hashea con bcrypt
 jdev tui                        # menú interactivo en pantalla completa
 ```
 
+> **Dashboard visual:** [jdev — GitHub Pages](https://julion02.github.io/JDEV-TOOL/) · resumen de las 10 utilidades, diseño de ingeniería y evidencias (salidas reales + capturas en `docs/evidence/`).
+
 ## Instalacion
 
 JDEV se descarga e instala de dos maneras: desde el registro oficial de npm o clonando el repositorio de GitHub. En ambos casos no necesita configuracion: funciona apenas se instala.
@@ -44,7 +46,7 @@ node src/index.ts --version
 ### Verificacion
 
 ```bash
-jdev --version   # 0.13.0
+jdev --version   # 0.13.1
 jdev --help      # lista los 10 subcomandos
 ```
 

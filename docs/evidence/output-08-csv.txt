@@ -1,0 +1,14 @@
+# JDEV 0.13.1 - csv (RFC 4180: info / format / tojson)
+id,nombre
+1,Ana
+2,"Beto, el grande"
+
+# comando: jdev csv format (input con BOM+CRLF)
+# salida normalizada a RFC 4180 (LF, comillas correctas)
+
+# comando: printf 'id,nombre\n1,Ana\n2,Beto\n' | jdev csv tojson
+[{"id":"1","nombre":"Ana"},{"id":"2","nombre":"Beto"}]
+
+# comando: jdev csv info
+rows: 2
+columns: 2

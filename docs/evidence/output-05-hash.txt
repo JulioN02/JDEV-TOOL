@@ -1,0 +1,6 @@
+# JDEV 0.13.1 - hash (SHA-256 / SHA-512 en streaming)
+# comando: echo -n 'texto' | jdev hash
+f46e3b17a6b639e5efddc3d1498ad73491599c22220f7ef6e14772f4ee25b913
+
+# comando: echo -n 'texto' | jdev hash -a sha512
+d47f50b5a966538e0ac99a73f38a5e8681b61818973478ee119168638700cb58106066f27b06d7ee264820a50890351f587eab38aeb6e6b3bad001ad59a26c63

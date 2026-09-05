@@ -1,0 +1,13 @@
+# JDEV 0.13.1 - json (format / minify / validate)
+# comando: echo '{"a":1,"b":[1,2]}' | jdev json format
+{
+  "a": 1,
+  "b": [
+    1,
+    2
+  ]
+}
+
+# comando: echo '{"a":' | jdev json validate  (error va a stderr, exit 2)
+invalid JSON at line 2, column 1
+exit code: 2

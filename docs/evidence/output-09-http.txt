@@ -1,0 +1,40 @@
+# JDEV 0.13.1 - http (mini-curl con secrets enmascarados)
+# comando: jdev http http://127.0.0.1:8787/
+HTTP/1.1 200 OK
+connection: keep-alive
+content-type: application/json; charset=utf-8
+date: Sat, 05 Sep 2026 02:34:12 GMT
+keep-alive: timeout=5
+transfer-encoding: chunked
+
+{"servicio":"jdev-practica","estado":"ok","endpoints":["/json","/echo","/lento","/error","/no-encontrado"]}
+# comando: jdev http -X POST -H 'Authorization: Bearer SECRETO-123' -d '{"a":1}' http://127.0.0.1:8787/echo
+# (la cabecera authorization se TRANSMITE al destino pero jdev nunca la imprime)
+HTTP/1.1 200 OK
+connection: keep-alive
+content-type: application/json; charset=utf-8
+date: Sat, 05 Sep 2026 02:34:13 GMT
+keep-alive: timeout=5
+transfer-encoding: chunked
+
+{"servicio":"echo","metodo":"POST","url":"/echo","headers":{"host":"127.0.0.1:8787","connection":"keep-alive","authorization":"Bearer SECRETO-123","content-type":"text/plain;charset=UTF-8","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","accept-encoding":"gzip, deflate","content-length":"7"},"body":"{\"a\":1}","recibidoEn":"2026-09-05T02:34:13.186Z"}
+# comando: jdev http http://127.0.0.1:8787/set-cookie  (set-cookie enmascarado)
+HTTP/1.1 200 OK
+connection: keep-alive
+content-type: application/json; charset=utf-8
+date: Sat, 05 Sep 2026 02:34:14 GMT
+keep-alive: timeout=5
+set-cookie: ***
+set-cookie: ***
+transfer-encoding: chunked
+
+{"ok":true}
+# comando: jdev http http://127.0.0.1:8787/no-encontrado  (404 = dato, exit 0)
+HTTP/1.1 404 Not Found
+connection: keep-alive
+content-type: application/json; charset=utf-8
+date: Sat, 05 Sep 2026 02:34:15 GMT
+keep-alive: timeout=5
+transfer-encoding: chunked
+
+{"error":"no encontrado","ruta":"/no-encontrado"}exit code: 0

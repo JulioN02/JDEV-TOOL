@@ -1,0 +1,26 @@
+# JDEV 0.13.1 - version y ayuda global
+# comando: jdev --version
+0.13.1
+
+# comando: jdev --help
+Usage: jdev [options] [command]
+
+Professional CLI dev toolkit (uuid, json, base64, timestamp, hash, password,
+jwt, csv, http, tui)
+
+Options:
+  -V, --version                                  output the version number
+  --lang <lang>                                  language for messages: es | en (default: system locale; JDEV_LANG overrides) (choices: "es", "en")
+  -h, --help                                     display help for command
+
+Commands:
+  uuid [options]                                 generate UUIDs (v4 by default, RFC 9562 v7 with --v7)
+  json [options] <action> [file]                 format, minify or validate JSON from a file or stdin
+  base64 [options] <action> [file]               encode or decode base64 (RFC 4648, standard or URL-safe)
+  timestamp [options] [epoch]                    print the current Unix timestamp or convert an epoch
+  hash [options] [file]                          print the SHA-256 (or SHA-512) digest of a file or stdin
+  password [options] <action> [password] [hash]  hash, verify or generate passwords (bcrypt, 72-byte limit enforced)
+  jwt [options] <token>                          decode a JWT token (header + payload, never the signature)
+  csv [options] <action> [file]                  inspect, format or convert CSV (RFC 4180 streaming parser)
+  http [options] <url>                           issue an HTTP request (mini-curl; secrets always masked)
+  tui [options]                                  interactive TUI menu (requires a TTY)

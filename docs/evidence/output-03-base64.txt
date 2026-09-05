@@ -1,0 +1,6 @@
+# JDEV 0.13.1 - base64 (estandar y URL-safe)
+# comando: echo -n 'hola mundo?' | jdev base64 encode --url
+aG9sYSBtdW5kbz8
+
+# comando: echo -n 'aG9sYQ==' | jdev base64 decode
+hola
